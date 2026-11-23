@@ -1,0 +1,13 @@
+@{
+    ViewData["Title"] = "Erro";
+    int? codigo = ViewBag.Codigo;
+    string mensagem = codigo == 404
+        ? "A página que você procurou não existe."
+        : "Ocorreu um erro ao processar o pedido. Tente novamente.";
+}
+<h1>Erro</h1>
+<div class="alert alert-danger">
+    <p class="mb-1">@mensagem</p>
+    <small>Código da requisição: @ViewBag.IdRequisicao</small>
+</div>
+<a class="btn btn-primary" asp-controller="Home" asp-action="Index">Voltar ao início</a>

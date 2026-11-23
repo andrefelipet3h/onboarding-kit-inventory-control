@@ -1,0 +1,84 @@
+{
+  "info": {
+    "name": "Controle de Estoque - APIs",
+    "description": "APIs com dados consolidados dos kits de onboarding. Rode o projeto antes de testar e ajuste a variável baseUrl se a porta for diferente. As APIs não exigem login.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5192"
+    }
+  ],
+  "item": [
+    {
+      "name": "1 - Kits por departamento",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/kits/por-departamento",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "kits", "por-departamento"]
+        }
+      }
+    },
+    {
+      "name": "1.1 - Kits por departamento em um período",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/kits/por-departamento?dataInicial=2026-10-01&dataFinal=2026-12-31",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "kits", "por-departamento"],
+          "query": [
+            { "key": "dataInicial", "value": "2026-10-01" },
+            { "key": "dataFinal", "value": "2026-12-31" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "1.2 - Período inválido (400)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/kits/por-departamento?dataInicial=2026-12-31&dataFinal=2026-01-01",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "kits", "por-departamento"],
+          "query": [
+            { "key": "dataInicial", "value": "2026-12-31" },
+            { "key": "dataFinal", "value": "2026-01-01" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "2 - Produtos mais usados nos kits",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/kits/produtos-mais-usados?top=5",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "kits", "produtos-mais-usados"],
+          "query": [
+            { "key": "top", "value": "5" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "2.1 - Parâmetro top inválido (400)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/kits/produtos-mais-usados?top=0",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "kits", "produtos-mais-usados"],
+          "query": [
+            { "key": "top", "value": "0" }
+          ]
+        }
+      }
+    }
+  ]
+}

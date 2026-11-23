@@ -1,0 +1,44 @@
+@model Usuario
+@{
+    Layout = null;
+    string returnUrl = ViewBag.ReturnUrl;
+}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Entrar - Controle de Estoque</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="tela-login">
+    <main class="login-caixa">
+        <h1 class="h4 text-center mb-3">Controle de Estoque</h1>
+        <div class="cartao">
+            <div class="cartao-corpo">
+                <form asp-action="Index" method="post" novalidate>
+                    <input type="hidden" name="returnUrl" value="@returnUrl" />
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="NomeUsuario" class="form-label"></label>
+                        <input asp-for="NomeUsuario" class="form-control" maxlength="50" autocomplete="username" autofocus />
+                        <span asp-validation-for="NomeUsuario" class="erro-campo"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Senha" class="form-label"></label>
+                        <input asp-for="Senha" type="password" class="form-control" autocomplete="current-password" />
+                        <span asp-validation-for="Senha" class="erro-campo"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Entrar</button>
+                </form>
+            </div>
+        </div>
+        <p class="dica text-center mt-3">
+            Administrador: usuário e senha.<br />
+            Colaborador: funcional (7 números) e senha.
+        </p>
+    </main>
+</body>
+</html>

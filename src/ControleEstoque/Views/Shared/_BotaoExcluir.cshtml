@@ -1,0 +1,6 @@
+@model int
+@* Botão de exclusão usado em todas as listagens: confirma em JavaScript antes de enviar (POST). *@
+<form asp-action="Delete" method="post" class="d-inline" onsubmit="return confirmarExclusao()">
+    <input type="hidden" name="id" value="@Model" />
+    <button type="submit" class="btn btn-sm btn-outline-danger" title="Excluir"><i class="bi bi-trash"></i></button>
+</form>

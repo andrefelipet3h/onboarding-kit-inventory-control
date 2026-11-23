@@ -1,0 +1,27 @@
+@model Kit
+@* Itens do kit (somente leitura): usado nos detalhes do kit e na área do colaborador *@
+<div class="tabela-rolavel">
+    <table class="table align-middle">
+        <thead>
+            <tr><th style="width: 60px;"></th><th>Produto</th><th>Categoria</th><th class="text-end">Quantidade</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Itens)
+            {
+                <tr>
+                    <td><img class="foto-mini" alt="" src="@(string.IsNullOrEmpty(item.FotoProdutoBase64) ? Url.Content("~/img/sem-foto.svg") : "data:image/jpeg;base64," + item.FotoProdutoBase64)" /></td>
+                    <td>@item.NomeProduto</td>
+                    <td>@item.Categoria</td>
+                    <td class="text-end">@item.Quantidade</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<p class="dica px-3">
+    Montado em @Model.DataMontagem.ToString("dd/MM/yyyy HH:mm")
+    @if (!string.IsNullOrEmpty(Model.Observacao))
+    {
+        <span>&middot; @Model.Observacao</span>
+    }
+</p>

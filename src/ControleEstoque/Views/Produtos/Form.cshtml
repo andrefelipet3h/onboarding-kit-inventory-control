@@ -1,0 +1,56 @@
+@model Produto
+@{
+    ViewData["Title"] = "Cadastro de produto";
+}
+<div class="page-head"><h1>Cadastro de produto</h1></div>
+
+<div class="cartao" style="max-width: 760px;">
+    <div class="cartao-corpo">
+        <form asp-action="Save" method="post" enctype="multipart/form-data" novalidate>
+            <input type="hidden" name="Operacao" value="@ViewBag.Operacao" />
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-sm-3">
+                    <label asp-for="Id" class="form-label">Código</label>
+                    <input asp-for="Id" class="form-control" readonly="@(ViewBag.Operacao == "A")" />
+                    <span asp-validation-for="Id" class="erro-campo"></span>
+                </div>
+                <div class="col-sm-9">
+                    <label asp-for="Nome" class="form-label"></label>
+                    <input asp-for="Nome" class="form-control" maxlength="60" />
+                    <span asp-validation-for="Nome" class="erro-campo"></span>
+                </div>
+                <div class="col-sm-5">
+                    <label asp-for="Categoria" class="form-label"></label>
+                    <input asp-for="Categoria" class="form-control" maxlength="30" list="sugestoesCategoria" placeholder="Ex.: Periférico" />
+                    <datalist id="sugestoesCategoria">
+                        <option value="Eletrônico"></option>
+                        <option value="Periférico"></option>
+                        <option value="Acessório"></option>
+                        <option value="Brinde"></option>
+                    </datalist>
+                    <span asp-validation-for="Categoria" class="erro-campo"></span>
+                </div>
+                <div class="col-sm-7">
+                    <label asp-for="Descricao" class="form-label"></label>
+                    <input asp-for="Descricao" class="form-control" maxlength="200" />
+                    <span asp-validation-for="Descricao" class="erro-campo"></span>
+                </div>
+            </div>
+
+            @if (ViewBag.Operacao == "A")
+            {
+                <p class="dica">Em estoque: <strong>@Model.Estoque.Quantidade</strong> unidade(s). A quantidade aumenta pela entrada (tela principal) e diminui pela montagem dos kits.</p>
+            }
+
+            @{ ViewData["Rotulo"] = "Foto do produto"; }
+            <partial name="_CampoImagem" model="Model" view-data="ViewData" />
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <a class="btn btn-link" asp-action="Index">Voltar</a>
+            </div>
+        </form>
+    </div>
+</div>

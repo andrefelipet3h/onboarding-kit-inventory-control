@@ -1,0 +1,94 @@
+@model Kit
+@{
+    ViewData["Title"] = "Montagem de kit";
+}
+<div class="page-head"><h1>@(ViewBag.Operacao == "I" ? "Montar kit" : "Alterar kit " + Model.Id)</h1></div>
+
+<form asp-action="Save" method="post" novalidate>
+    <input type="hidden" name="Operacao" value="@ViewBag.Operacao" />
+    <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+    <span asp-validation-for="Id" class="erro-campo"></span>
+
+    @* MESTRE: o kit *@
+    <div class="cartao mb-3">
+        <h2 class="cartao-titulo">1. Colaborador</h2>
+        <div class="cartao-corpo">
+            <div class="row g-3">
+                <div class="col-lg-6">
+                    <label asp-for="ColaboradorId" class="form-label"></label>
+                    <select asp-for="ColaboradorId" asp-items="ViewBag.Colaboradores" class="form-select" onchange="carregarDadosColaborador()"></select>
+                    <span asp-validation-for="ColaboradorId" class="erro-campo"></span>
+                    <div id="dadosColaborador" class="info-ajax mt-2"></div>
+                </div>
+                <div class="col-lg-6">
+                    <label asp-for="Observacao" class="form-label"></label>
+                    <textarea asp-for="Observacao" class="form-control" rows="2" maxlength="200"></textarea>
+                    <span asp-validation-for="Observacao" class="erro-campo"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* DETALHE: os itens *@
+    <div class="cartao mb-3">
+        <h2 class="cartao-titulo">2. Produtos do kit</h2>
+        <div class="cartao-corpo">
+            <div class="row g-2 align-items-end mb-2">
+                <div class="col-md-6">
+                    <label for="produtoItem" class="form-label">Produto</label>
+                    <select id="produtoItem" asp-items="ViewBag.Produtos" class="form-select" onchange="carregarEstoqueProduto()"></select>
+                </div>
+                <div class="col-6 col-md-2">
+                    <label for="quantidadeItem" class="form-label">Quantidade</label>
+                    <input id="quantidadeItem" type="number" min="1" value="1" class="form-control" />
+                </div>
+                <div class="col-6 col-md-4">
+                    <button type="button" class="btn btn-outline-primary w-100" onclick="adicionarItemKit()">Adicionar ao kit</button>
+                </div>
+            </div>
+            <div id="infoProduto" class="info-ajax mb-3"></div>
+
+            <span asp-validation-for="Itens" class="erro-campo"></span>
+            <div class="tabela-rolavel">
+                <table class="table align-middle">
+                    <thead>
+                        <tr><th style="width: 60px;"></th><th>Produto</th><th class="text-end">Quantidade</th><th></th></tr>
+                    </thead>
+                    <tbody id="itensKit">
+                        @for (int i = 0; i < Model.Itens.Count; i++)
+                        {
+                            var item = Model.Itens[i];
+                            <tr>
+                                <td><img class="foto-mini" alt="" src="@(string.IsNullOrEmpty(item.FotoProdutoBase64) ? Url.Content("~/img/sem-foto.svg") : "data:image/jpeg;base64," + item.FotoProdutoBase64)" /></td>
+                                <td>
+                                    <input type="hidden" data-campo="ProdutoId" name="Itens[@i].ProdutoId" value="@item.ProdutoId" />
+                                    <input type="hidden" data-campo="NomeProduto" name="Itens[@i].NomeProduto" value="@item.NomeProduto" />
+                                    @item.NomeProduto
+                                </td>
+                                <td class="text-end">
+                                    <input type="hidden" data-campo="Quantidade" name="Itens[@i].Quantidade" value="@item.Quantidade" />
+                                    @item.Quantidade
+                                </td>
+                                <td class="acoes-linha"><button type="button" class="btn btn-sm btn-outline-danger" onclick="removerItemKit(this)"><i class="bi bi-x-lg"></i></button></td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tbody>
+                        <tr id="semItens" style="@(Model.Itens.Count > 0 ? "display: none" : "")"><td colspan="4" class="vazio">Nenhum produto adicionado.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Salvar kit</button>
+    <a class="btn btn-link" asp-action="Index">Voltar</a>
+</form>
+
+@section Scripts {
+    <script>
+        // na alteração (ou quando a tela volta com erro), já mostra os dados do colaborador
+        carregarDadosColaborador();
+    </script>
+}

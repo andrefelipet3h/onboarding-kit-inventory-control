@@ -1,0 +1,40 @@
+@{
+    ViewData["Title"] = "Consulta de kits";
+}
+<div class="page-head"><h1>Consulta de kits montados</h1></div>
+
+<fieldset class="filtros mb-3">
+    <legend>Filtros</legend>
+    <div class="row g-2 align-items-end">
+        <div class="col-lg-3">
+            <label for="colaborador" class="form-label">Colaborador (nome ou funcional)</label>
+            <input type="text" id="colaborador" class="form-control" />
+        </div>
+        <div class="col-lg-3">
+            <label for="departamento" class="form-label">Departamento</label>
+            <select id="departamento" class="form-select" asp-items="ViewBag.Departamentos"></select>
+        </div>
+        <div class="col-lg-2">
+            <label for="situacao" class="form-label">Situação</label>
+            <select id="situacao" class="form-select" asp-items="ViewBag.Situacoes"></select>
+        </div>
+        <div class="col-lg-3">
+            <label for="dataInicial" class="form-label">Montado entre</label>
+            <div class="d-flex gap-1">
+                <input type="date" id="dataInicial" class="form-control" aria-label="Data inicial" />
+                <input type="date" id="dataFinal" class="form-control" aria-label="Data final" />
+            </div>
+        </div>
+        <div class="col-lg-1">
+            <button type="button" class="btn btn-primary w-100" onclick="aplicaFiltroConsultaKits()">Filtrar</button>
+        </div>
+    </div>
+</fieldset>
+
+<div class="cartao" id="resultadoConsulta"></div>
+
+@section Scripts {
+    <script>
+        aplicaFiltroConsultaKits();
+    </script>
+}

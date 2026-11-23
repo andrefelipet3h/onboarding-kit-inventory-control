@@ -1,0 +1,38 @@
+@model List<Kit>
+<div class="tabela-rolavel">
+    <table class="table table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Kit</th>
+                <th>Colaborador</th>
+                <th>Funcional</th>
+                <th>Departamento</th>
+                <th>Montado em</th>
+                <th class="text-end">Unidades</th>
+                <th>Situação</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var k in Model)
+            {
+                <tr>
+                    <td><a asp-controller="Kits" asp-action="Detalhes" asp-route-id="@k.Id"><strong>@k.Id</strong></a></td>
+                    <td>@k.NomeColaborador</td>
+                    <td>@k.Funcional</td>
+                    <td>@k.NomeDepartamento</td>
+                    <td class="nowrap">@k.DataMontagem.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td class="text-end">@k.TotalUnidades</td>
+                    <td><partial name="_SeloSituacao" model="k" /></td>
+                </tr>
+            }
+            @if (Model.Count == 0)
+            {
+                <tr><td colspan="7" class="vazio">Nenhum kit encontrado com esses filtros.</td></tr>
+            }
+        </tbody>
+    </table>
+</div>
+@if (Model.Count > 0)
+{
+    <p class="dica px-3 pt-2">@Model.Count kit(s) encontrado(s), com @Model.Sum(k => k.TotalUnidades) unidade(s) no total.</p>
+}

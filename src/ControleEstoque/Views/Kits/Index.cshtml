@@ -1,0 +1,57 @@
+@model List<Kit>
+@{
+    ViewData["Title"] = "Kits";
+}
+<div class="page-head">
+    <h1>Kits de onboarding</h1>
+    <a class="btn btn-primary" asp-action="Create">Montar kit</a>
+</div>
+
+<p class="dica">Cada colaborador tem um kit. Os produtos do kit saem do estoque ao montar; enquanto o kit não for entregue, alterar ou excluir devolve as unidades.</p>
+
+<div class="cartao">
+    <div class="tabela-rolavel">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Kit</th>
+                    <th>Colaborador</th>
+                    <th>Departamento</th>
+                    <th>Montado em</th>
+                    <th class="text-end">Unidades</th>
+                    <th>Situação</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var k in Model)
+                {
+                    <tr>
+                        <td><strong>@k.Id</strong></td>
+                        <td>@k.NomeColaborador<div class="dica">Funcional @k.Funcional</div></td>
+                        <td>@k.NomeDepartamento</td>
+                        <td class="nowrap">@k.DataMontagem.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td class="text-end">@k.TotalUnidades</td>
+                        <td><partial name="_SeloSituacao" model="k" /></td>
+                        <td class="acoes-linha">
+                            <a class="btn btn-sm btn-outline-secondary" asp-action="Detalhes" asp-route-id="@k.Id" title="Detalhes"><i class="bi bi-eye"></i></a>
+                            @if (k.PodeAlterar)
+                            {
+                                <a class="btn btn-sm btn-outline-primary" asp-action="Edit" asp-route-id="@k.Id" title="Editar"><i class="bi bi-pencil"></i></a>
+                                <form asp-action="Entregar" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@k.Id" />
+                                    <button type="submit" class="btn btn-sm btn-outline-success" title="Marcar como entregue"><i class="bi bi-check2-square"></i></button>
+                                </form>
+                                <partial name="_BotaoExcluir" model="k.Id" />
+                            }
+                        </td>
+                    </tr>
+                }
+                @if (Model.Count == 0)
+                {
+                    <tr><td colspan="7" class="vazio">Nenhum kit montado. Comece pelo botão "Montar kit".</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

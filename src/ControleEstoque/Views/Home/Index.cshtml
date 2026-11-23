@@ -1,0 +1,121 @@
+@model List<Produto>
+@{
+    ViewData["Title"] = "Início";
+    var ultimosKits = (List<Kit>)ViewBag.UltimosKits;
+}
+
+<div class="page-head">
+    <h1>Estoque</h1>
+    <div>
+        <a class="btn btn-primary" asp-controller="Kits" asp-action="Create">Montar kit</a>
+        <a class="btn btn-outline-primary" asp-controller="Kits" asp-action="Index">Ver kits</a>
+    </div>
+</div>
+
+<div class="row g-2 mb-3">
+    <div class="col-6 col-md-3"><div class="total"><div class="total-nome">Kits montados</div><div class="total-valor">@ViewBag.TotalKits</div></div></div>
+    <div class="col-6 col-md-3"><div class="total"><div class="total-nome">Aguardando entrega</div><div class="total-valor">@ViewBag.KitsMontados</div></div></div>
+    <div class="col-6 col-md-3"><div class="total"><div class="total-nome">Colaboradores</div><div class="total-valor">@ViewBag.TotalColaboradores</div></div></div>
+    <div class="col-6 col-md-3"><div class="total"><div class="total-nome">Colaboradores sem kit</div><div class="total-valor">@ViewBag.ColaboradoresSemKit</div></div></div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-lg-7">
+        <div class="cartao h-100">
+            <h2 class="cartao-titulo">Estoque por produto</h2>
+            <div class="tabela-rolavel">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Produto</th>
+                            <th>Categoria</th>
+                            <th class="text-end">Em estoque</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model)
+                        {
+                            <tr>
+                                <td style="width: 60px"><img class="foto-mini" alt="" src="@(string.IsNullOrEmpty(p.ImagemEmBase64) ? Url.Content("~/img/sem-foto.svg") : "data:image/jpeg;base64," + p.ImagemEmBase64)" /></td>
+                                <td>@p.Nome</td>
+                                <td>@p.Categoria</td>
+                                <td class="text-end">@p.Estoque.Quantidade</td>
+                            </tr>
+                        }
+                        @if (Model.Count == 0)
+                        {
+                            <tr><td colspan="4" class="vazio">Nenhum produto. <a asp-controller="Produtos" asp-action="Create">Cadastre o primeiro</a>.</td></tr>
+                        }
+                    </tbody>
+                    @if (Model.Count > 0)
+                    {
+                        <tfoot>
+                            <tr class="fw-bold">
+                                <td></td>
+                                <td colspan="2">Total</td>
+                                <td class="text-end">@Model.Sum(p => p.Estoque.Quantidade)</td>
+                            </tr>
+                        </tfoot>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="cartao">
+            <h2 class="cartao-titulo">Entrada no estoque</h2>
+            <div class="cartao-corpo">
+                <p class="dica">Unidades que chegaram (compra, devolução de equipamento...). A retirada do estoque acontece quando um kit é montado.</p>
+                <form asp-controller="Estoque" asp-action="Entrada" method="post" class="row g-2">
+                    <div class="col-8"><select class="form-select" name="produtoId" asp-items="ViewBag.Produtos" required aria-label="Produto"></select></div>
+                    <div class="col-4"><input class="form-control" name="quantidade" type="number" min="1" placeholder="Qtd." required aria-label="Quantidade" /></div>
+                    <div class="col-12"><button class="btn btn-success" type="submit">Registrar entrada</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-6">
+        <div class="cartao h-100">
+            <h2 class="cartao-titulo">Produtos mais usados nos kits</h2>
+            @* preenchido via AJAX pela API /api/kits/produtos-mais-usados *@
+            <table class="table align-middle">
+                <thead><tr><th>Produto</th><th class="text-end">Kits</th><th class="text-end">Unidades</th></tr></thead>
+                <tbody id="maisUsados"><tr><td colspan="3" class="dica">Carregando...</td></tr></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="cartao h-100">
+            <h2 class="cartao-titulo">Últimos kits</h2>
+            <div class="tabela-rolavel">
+                <table class="table table-hover align-middle">
+                    <thead><tr><th>Kit</th><th>Colaborador</th><th>Situação</th></tr></thead>
+                    <tbody>
+                        @foreach (var k in ultimosKits)
+                        {
+                            <tr>
+                                <td><a asp-controller="Kits" asp-action="Detalhes" asp-route-id="@k.Id">@k.Id</a></td>
+                                <td>@k.NomeColaborador</td>
+                                <td><partial name="_SeloSituacao" model="k" /></td>
+                            </tr>
+                        }
+                        @if (ultimosKits.Count == 0)
+                        {
+                            <tr><td colspan="3" class="vazio">Nenhum kit ainda.</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        carregarProdutosMaisUsados();
+    </script>
+}

@@ -1,0 +1,9 @@
+@model Kit
+@if (Model.Situacao == Kit.Entregue)
+{
+    <span>Entregue em @Model.DataEntrega?.ToString("dd/MM/yyyy")</span>
+}
+else
+{
+    <span>Montado</span>
+}

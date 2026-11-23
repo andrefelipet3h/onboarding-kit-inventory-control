@@ -1,0 +1,52 @@
+@model Colaborador
+@{
+    ViewData["Title"] = "Meu kit";
+    Kit kit = ViewBag.Kit;
+}
+
+<div class="cartao mb-3">
+    <div class="cartao-corpo d-flex align-items-center gap-3">
+        <img class="foto-perfil" alt="" src="@(string.IsNullOrEmpty(Model.ImagemEmBase64) ? Url.Content("~/img/sem-foto.svg") : "data:image/jpeg;base64," + Model.ImagemEmBase64)" />
+        <div>
+            <h1 class="h4 mb-1">@Model.Nome</h1>
+            <div class="dica">
+                Departamento: @Model.NomeDepartamento<br />
+                Funcional: @Model.Funcional - admissão em @Model.DataAdmissao.ToString("dd/MM/yyyy")
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (kit == null)
+{
+    <div class="alert alert-info">Seu kit ainda não foi montado. Quando ele for montado, os itens aparecem aqui.</div>
+}
+else
+{
+    <div class="row g-3">
+        <div class="col-lg-8">
+            <div class="cartao h-100">
+                <h2 class="cartao-titulo d-flex justify-content-between">Itens do kit <partial name="_SeloSituacao" model="kit" /></h2>
+                <partial name="_ItensKit" model="kit" />
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="cartao h-100">
+                <h2 class="cartao-titulo">Recebimento</h2>
+                <div class="cartao-corpo">
+                    @if (kit.PodeAlterar)
+                    {
+                        <p>Quando receber o kit, confirme o recebimento aqui.</p>
+                        <form asp-action="ConfirmarRecebimento" method="post" onsubmit="return confirm('Confirma que recebeu todos os itens do kit?')">
+                            <button type="submit" class="btn btn-success">Confirmar recebimento</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <p class="mb-0">Kit recebido em @kit.DataEntrega?.ToString("dd/MM/yyyy 'às' HH:mm").</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

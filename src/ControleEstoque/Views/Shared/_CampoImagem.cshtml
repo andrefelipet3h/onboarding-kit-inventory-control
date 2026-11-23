@@ -1,0 +1,12 @@
+@model ImagemViewModel
+@* Campo de foto reaproveitado nos cadastros de Produtos e Colaboradores *@
+<label class="form-label" for="Imagem">@ViewData["Rotulo"]</label>
+<div class="campo-imagem">
+    <img id="imgPreview" class="img-preview" alt="Pré-visualização"
+         src="@(string.IsNullOrEmpty(Model.ImagemEmBase64) ? Url.Content("~/img/sem-foto.svg") : "data:image/jpeg;base64," + Model.ImagemEmBase64)" />
+    <div>
+        <input type="file" name="Imagem" id="Imagem" accept="image/*" onchange="exibirImagem()" class="form-control" />
+        <div class="dica">Até 2 MB. Na alteração, deixe em branco para manter a foto atual.</div>
+        <span asp-validation-for="Imagem" class="erro-campo"></span>
+    </div>
+</div>

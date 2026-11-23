@@ -1,0 +1,89 @@
+/* Estilos do sistema. O Bootstrap faz quase tudo (grid, tabelas, formulários e botões);
+   aqui ficam só as cores e alguns ajustes. */
+
+:root {
+    --azul: #1f4e79;
+    --azul-escuro: #173a5a;
+    --verde: #198754;
+    --laranja: #b86a00;
+    --vermelho: #c0392b;
+    --cinza: #6c757d;
+    --borda: #d9dee3;
+}
+
+body {
+    background: #f4f6f8;
+    color: #212529;
+}
+
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.2rem; }
+
+/* Menu e rodapé */
+.barra { background: var(--azul); margin-bottom: 1.5rem; }
+.barra .navbar-brand { color: #fff; font-weight: 600; }
+.barra .nav-link { color: #d4dfea; }
+.barra .nav-link:hover, .barra .nav-link.active { color: #fff; }
+.barra .navbar-toggler { border-color: rgba(255, 255, 255, 0.5); }
+.barra .navbar-toggler-icon { filter: invert(1); }
+.usuario-logado { color: #d4dfea; font-size: 0.95rem; }
+
+.rodape { color: var(--cinza); font-size: 0.85rem; border-top: 1px solid var(--borda); padding-top: 0.75rem; }
+
+.btn-primary { background: var(--azul); border-color: var(--azul); }
+.btn-primary:hover, .btn-primary:focus { background: var(--azul-escuro); border-color: var(--azul-escuro); }
+.btn-outline-primary { color: var(--azul); border-color: var(--azul); }
+.btn-outline-primary:hover { background: var(--azul); border-color: var(--azul); }
+
+/* Componentes das telas */
+.page-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+.page-head h1 { margin: 0; }
+
+.cartao { background: #fff; border: 1px solid var(--borda); border-radius: 4px; }
+.cartao > .cartao-titulo { padding: 0.65rem 1rem; border-bottom: 1px solid var(--borda); background: #f8f9fa; margin: 0; font-size: 1.05rem; }
+.cartao > .cartao-corpo { padding: 1rem; }
+.cartao .table { margin-bottom: 0; }
+.cartao .table thead th { background: #f8f9fa; font-weight: 600; }
+.tabela-rolavel { overflow-x: auto; }
+
+.dica { color: var(--cinza); font-size: 0.9rem; }
+.nowrap { white-space: nowrap; }
+.acoes-linha { white-space: nowrap; text-align: right; }
+.vazio { text-align: center; color: var(--cinza); padding: 1.5rem 1rem !important; }
+.erro-campo { color: var(--vermelho); font-size: 0.9rem; }
+.txt-erro { color: var(--vermelho); }
+.campo-data { min-width: 150px; }
+.dados dt { color: var(--cinza); font-weight: 600; }
+
+
+
+
+/* Quadros de totais da Home */
+.total { background: #fff; border: 1px solid var(--borda); border-radius: 4px; padding: 0.6rem 0.9rem; }
+.total-nome { color: var(--cinza); font-size: 0.85rem; }
+.total-valor { font-size: 1.5rem; font-weight: 600; }
+
+/* Fotos (produtos e colaboradores) */
+.foto-mini { width: 44px; height: 44px; object-fit: cover; border-radius: 3px; border: 1px solid var(--borda); background: #fff; }
+.img-preview { width: 120px; height: 120px; object-fit: cover; border-radius: 4px; border: 1px solid var(--borda); background: #fff; }
+.campo-imagem { display: flex; align-items: center; gap: 1rem; }
+.foto-perfil { width: 80px; height: 80px; object-fit: cover; border-radius: 4px; border: 1px solid var(--borda); background: #fff; }
+
+/* Informações carregadas via AJAX ao lado dos combos */
+.info-ajax { display: flex; align-items: center; gap: 0.75rem; min-height: 1rem; }
+
+/* Filtros das consultas */
+.filtros { background: #fff; border: 1px solid var(--borda); border-radius: 4px; padding: 0.5rem 1rem 1rem; }
+.filtros legend { float: none; width: auto; font-size: 1rem; font-weight: 600; padding: 0 0.4rem; margin: 0; }
+
+/* Login */
+.tela-login { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+.login-caixa { width: 100%; max-width: 380px; }
+.login-caixa .cartao-corpo { padding: 1.5rem; }

@@ -1,0 +1,31 @@
+@model Kit
+@{
+    ViewData["Title"] = "Kit " + Model.Id;
+    Colaborador colaborador = ViewBag.Colaborador;
+}
+<div class="page-head">
+    <h1>Kit @Model.Id</h1>
+    <a class="btn btn-link" asp-action="Index">Voltar</a>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-5">
+        <div class="cartao h-100">
+            <h2 class="cartao-titulo">Colaborador</h2>
+            <div class="cartao-corpo d-flex gap-3 align-items-center">
+                <img class="img-preview" alt="" src="@(string.IsNullOrEmpty(colaborador.ImagemEmBase64) ? Url.Content("~/img/sem-foto.svg") : "data:image/jpeg;base64," + colaborador.ImagemEmBase64)" />
+                <dl class="dados mb-0">
+                    <dt>Nome</dt><dd>@colaborador.Nome</dd>
+                    <dt>Funcional</dt><dd>@colaborador.Funcional</dd>
+                    <dt>Admissão</dt><dd>@colaborador.DataAdmissao.ToString("dd/MM/yyyy")</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-7">
+        <div class="cartao h-100">
+            <h2 class="cartao-titulo d-flex justify-content-between">Produtos <partial name="_SeloSituacao" model="Model" /></h2>
+            <partial name="_ItensKit" model="Model" />
+        </div>
+    </div>
+</div>
